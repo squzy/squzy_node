@@ -1,0 +1,29 @@
+{
+  "name": "core",
+  "version": "0.0.0",
+  "description": "Basic module Squzy",
+  "author": "Iurii Panarin <tduble94@gmail.com>",
+  "homepage": "https://github.com/squzy/squzy_node#readme",
+  "license": "ISC",
+  "main": "lib/index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "files": [
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/squzy/squzy_node.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "bugs": {
+    "url": "https://github.com/squzy/squzy_node/issues"
+  },
+  "dependencies": {
+    "cross-fetch": "^3.0.4",
+    "nanoid": "^3.1.9"
+  }
+}
