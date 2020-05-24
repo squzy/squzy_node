@@ -14,7 +14,8 @@
         "es6"
       ],
       "paths": {
-        "@squzy/core": ["core/liv"]
+        "@squzy/core": ["core/lib"],
+        "@squzy/express": ["core/express"]
       }
     },
     "exclude": [

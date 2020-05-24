@@ -2,10 +2,33 @@
   "name": "root",
   "private": true,
   "scripts": {
-    "lerna": "lerna"
+    "lerna": "lerna",
+    "format:code": "prettier --write \"packages/**/*.{ts,js,?css}\"",
+    "format": "npm-run-all -p format:code"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "packages/**/*.{ts,js,?css,json}": [
+      "prettier --write",
+      "git add"
+    ],
+    "packages/**/*.{ts,js}": [
+      "tslint -p tsconfig.json -c tslint.json --fix",
+      "git add"
+    ]
   },
   "devDependencies": {
-    "lerna": "^3.21.0"
+    "codelyzer": "^5.2.2",
+    "husky": "^4.2.5",
+    "lerna": "^3.21.0",
+    "lint-staged": "^10.2.6",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^2.0.5",
+    "tslint": "^6.1.2"
   },
   "dependencies": {
     "@types/node": "^14.0.5",
