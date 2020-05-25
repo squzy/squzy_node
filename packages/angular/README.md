@@ -2,7 +2,7 @@
 
 ## Usage
 
-```
+```typescript
 providers: [
     {
       provide: SQUZY_APPLICATION_TOKEN,

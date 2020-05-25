@@ -23,12 +23,7 @@
     "url": "https://github.com/squzy/squzy_node/issues"
   },
   "dependencies": {
-    "@angular/common": "^9.1.9",
-    "@angular/core": "^9.1.9",
-    "@types/on-finished": "^2.3.1",
     "cross-fetch": "^3.0.4",
-    "nanoid": "^3.1.9",
-    "on-finished": "^2.3.0",
-    "rxjs": "^6.5.5"
+    "nanoid": "^3.1.9"
   }
 }
