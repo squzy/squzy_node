@@ -7,7 +7,7 @@ export interface TransactionOpts {
     id: string;
     host: string;
   };
-  parent?: Transaction<any>;
+  parent?: string;
   type: Type;
 }
 
@@ -40,8 +40,10 @@ export interface CommitMsg {
   error?: Error;
 }
 
+export const TRACING_HEADER = "squzy_trx_id";
+
 export class Transaction<T> {
-  id = nanoid();
+  private id = nanoid();
 
   private dateFrom = new Date();
 
@@ -58,7 +60,7 @@ export class Transaction<T> {
       id: this.id,
       dateFrom: this.dateFrom.toISOString(),
       dateTo: dateTo.toISOString(),
-      parentId: (this.opts.parent && this.opts.parent.id) || null,
+      parentId: (this.opts.parent && this.opts.parent) || null,
       name: this.opts.name,
       type: this.opts.type,
     };
@@ -95,7 +97,7 @@ export class Transaction<T> {
   createTransaction<R>(name: string, type: Type): Transaction<R> {
     return new Transaction({
       name,
-      parent: this,
+      parent: this.id,
       applicationInfo: this.opts.applicationInfo,
       type,
     });

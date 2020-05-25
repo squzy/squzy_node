@@ -5,7 +5,7 @@ import { Type } from "../enums/enums";
 export class Application {
   constructor(private id: string, private host: string) {}
 
-  createTransaction<T>(name: string, type: Type): Transaction<T> {
+  createTransaction<T>(name: string, type: Type, parent: string = null): Transaction<T> {
     return new Transaction<T>({
       name,
       applicationInfo: {
@@ -13,6 +13,7 @@ export class Application {
         host: this.host,
       },
       type,
+      parent,
     });
   }
 }
