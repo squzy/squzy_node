@@ -31,6 +31,7 @@
   "dependencies": {
     "@angular/common": "^9.1.9",
     "@angular/core": "^9.1.9",
+    "@squzy/core": "^0.0.0",
     "@types/on-finished": "^2.3.1",
     "on-finished": "^2.3.0",
     "rxjs": "^6.5.5"

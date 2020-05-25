@@ -1,5 +1,5 @@
 import { Injectable, Inject, InjectionToken } from "@angular/core";
-import { createApplication, Options } from "./../../../core/lib";
+import { createApplication, Options } from "@squzy/core";
 import { from } from "rxjs";
 import { publishReplay, refCount, tap } from "rxjs/operators";
 

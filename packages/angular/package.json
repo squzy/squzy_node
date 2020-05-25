@@ -27,5 +27,8 @@
     "@angular/common": "^6.x.x",
     "@angular/core": "^6.x.x",
     "rxjs": "^6.x.x"
+  },
+  "dependencies": {
+    "@squzy/core": "^0.0.0"
   }
 }

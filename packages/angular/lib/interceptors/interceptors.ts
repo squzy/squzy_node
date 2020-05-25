@@ -9,7 +9,7 @@ import {
 import { map, switchMap, catchError, finalize } from "rxjs/operators";
 import { Observable, throwError } from "rxjs";
 import { SquzyAppService } from "../services/app.service";
-import { Type, Status } from "./../../../core/lib";
+import { Type, Status } from "@squzy/core";
 
 @Injectable()
 export class SquzyInterceptor implements HttpInterceptor {
