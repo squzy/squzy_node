@@ -1,22 +1,34 @@
-import { Request, Response, NextFunction, response } from "express";
-import { Application, Type, Transaction } from "@squzy/core";
+import { Request, Response } from "express";
+import { Application, Type, Status, Transaction } from "@squzy/core";
+import * as onFinished from "on-finished";
 
-class ExpressTransaction<T> extends Transaction<T> {
-  commit() {
-    const startTime = new Date();
-    const res = this.fn(this);
-    return res;
-  }
-}
+const _key = "squzy_express";
 
 export function createMiddleware(app: Application) {
-  return (req: Request, res: Response, next: NextFunction) => {
+  return (req: Request, res: Response) => {
     const trx = app.createTransaction(
-      req.baseUrl + req.path,
-      Type.TRANSACTION_TYPE_ROUTER,
-      () => next()
+      req.baseUrl + req.route.path,
+      Type.TRANSACTION_TYPE_ROUTER
     );
-    response.locals.__squzy_transaction = trx;
-    trx.commit();
+    res.locals[_key] = trx;
+    onFinished(res, (err, _) => {
+      if (err) {
+        return trx
+          .setMeta({
+            status: Status.TRANSACTION_FAILED,
+            error: err,
+          })
+          .end();
+      }
+      return trx
+        .setMeta({
+          status: Status.TRANSACTION_SUCCESSFUL,
+        })
+        .end();
+    });
   };
+}
+
+export function getCurrentTransaction<T>(res: Response): Transaction<T> {
+  return res.locals[_key];
 }

@@ -3,21 +3,17 @@ import { Transaction } from "../transaction/transaction";
 import { Type } from "../enums/enums";
 
 export class Application {
-  constructor(private id: string) {}
+  constructor(private id: string, private host: string) {}
 
-  createTransaction<T>(
-    name: string,
-    type: Type,
-    fn: (trx: Transaction<T>) => T
-  ): Transaction<T> {
-    return new Transaction(
-      {
-        name,
-        applicationId: this.id,
-        type,
+  createTransaction<T>(name: string, type: Type): Transaction<T> {
+    return new Transaction<T>({
+      name,
+      applicationInfo: {
+        id: this.id,
+        host: this.host,
       },
-      fn
-    );
+      type,
+    });
   }
 }
 
@@ -38,5 +34,5 @@ export function createApplication(
         application_id: string;
       };
     }>((body) => body.json())
-    .then((res) => new Application(res.data.application_id));
+    .then((res) => new Application(res.data.application_id, monitoringHost));
 }

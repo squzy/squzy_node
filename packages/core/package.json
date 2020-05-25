@@ -1,5 +1,5 @@
 {
-  "name": "core",
+  "name": "@squzy/core",
   "version": "0.0.0",
   "description": "Basic module Squzy",
   "author": "Iurii Panarin <tduble94@gmail.com>",
@@ -23,7 +23,9 @@
     "url": "https://github.com/squzy/squzy_node/issues"
   },
   "dependencies": {
+    "@types/on-finished": "^2.3.1",
     "cross-fetch": "^3.0.4",
-    "nanoid": "^3.1.9"
+    "nanoid": "^3.1.9",
+    "on-finished": "^2.3.0"
   }
 }
