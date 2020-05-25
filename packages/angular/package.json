@@ -1,13 +1,14 @@
 {
-  "name": "@squzy/core",
+  "name": "@squzy/angular",
   "version": "0.0.0",
-  "description": "Basic module Squzy",
+  "description": "> TODO: description",
   "author": "Iurii Panarin <tduble94@gmail.com>",
   "homepage": "https://github.com/squzy/squzy_node#readme",
   "license": "ISC",
-  "main": "lib/index.js",
+  "main": "lib/angular.js",
   "directories": {
-    "lib": "lib"
+    "lib": "lib",
+    "test": "__tests__"
   },
   "files": [
     "lib"
@@ -22,13 +23,9 @@
   "bugs": {
     "url": "https://github.com/squzy/squzy_node/issues"
   },
-  "dependencies": {
-    "@angular/common": "^9.1.9",
-    "@angular/core": "^9.1.9",
-    "@types/on-finished": "^2.3.1",
-    "cross-fetch": "^3.0.4",
-    "nanoid": "^3.1.9",
-    "on-finished": "^2.3.0",
-    "rxjs": "^6.5.5"
+  "peerDependencies": {
+    "@angular/common": "^6.x.x",
+    "@angular/core": "^6.x.x",
+    "rxjs": "^6.x.x"
   }
 }

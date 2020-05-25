@@ -30,7 +30,9 @@ export interface TransactionCommitMsg {
   dateTo: string;
   status: Status;
   type: Type;
-  error?: string;
+  error?: {
+    message: string;
+  };
   meta?: Meta;
 }
 
@@ -46,6 +48,8 @@ export class Transaction<T> {
   private id = nanoid();
 
   private dateFrom = new Date();
+
+  private commited = false;
 
   private meta: TransactionCommitMsg;
 
@@ -72,26 +76,33 @@ export class Transaction<T> {
       };
       return this;
     }
+
     this.meta = {
       ...basicMeta,
       status: Status.TRANSACTION_FAILED,
-      error: msg.error.message && null,
+      meta: msg.meta || null,
+      error: {
+        message: msg.error.message || null,
+      },
     };
 
     return this;
   }
 
   end() {
-    if (!this.meta) {
+    if (!this.meta || this.commited) {
       return;
     }
-    fetch(
-      `${this.opts}/v1/applications/${this.opts.applicationInfo.id}/transactions`,
-      {
-        method: "POST",
-        body: JSON.stringify(this.meta),
-      }
-    );
+    this.commited = true;
+    try {
+      fetch(
+        `${this.opts.applicationInfo.host}/v1/applications/${this.opts.applicationInfo.id}/transactions`,
+        {
+          method: "POST",
+          body: JSON.stringify(this.meta),
+        }
+      );
+    } catch (err) {}
   }
 
   createTransaction<R>(name: string, type: Type): Transaction<R> {
