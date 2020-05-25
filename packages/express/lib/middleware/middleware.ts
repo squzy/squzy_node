@@ -6,6 +6,7 @@ const _key = "squzy_express";
 
 export function createMiddleware(app: Application) {
   return (req: Request, res: Response) => {
+    const path = req.baseUrl + req.route.path;
     const trx = app.createTransaction(
       req.baseUrl + req.route.path,
       Type.TRANSACTION_TYPE_ROUTER
@@ -15,6 +16,9 @@ export function createMiddleware(app: Application) {
       if (err) {
         return trx
           .setMeta({
+            meta: {
+              path,
+            },
             status: Status.TRANSACTION_FAILED,
             error: err,
           })
@@ -22,6 +26,9 @@ export function createMiddleware(app: Application) {
       }
       return trx
         .setMeta({
+          meta: {
+            path,
+          },
           status: Status.TRANSACTION_SUCCESSFUL,
         })
         .end();

@@ -11,12 +11,14 @@ export interface TransactionOpts {
   type: Type;
 }
 
+interface Meta {
+  host?: string;
+  path?: string;
+}
+
 export interface CommitMsg {
   error?: Error;
-  meta?: {
-    host: string;
-    path: string;
-  };
+  meta?: Meta;
   status: Status;
 }
 
@@ -29,14 +31,12 @@ export interface TransactionCommitMsg {
   status: Status;
   type: Type;
   error?: string;
-  meta?: {
-    host: string;
-    path: string;
-  };
+  meta?: Meta;
 }
 
 export interface CommitMsg {
   status: Status;
+  meta?: Meta;
   error?: Error;
 }
 
@@ -49,8 +49,8 @@ export class Transaction<T> {
 
   constructor(protected opts: TransactionOpts) {}
 
-  setMeta(meta: CommitMsg) {
-    if (!meta) {
+  setMeta(msg: CommitMsg) {
+    if (!msg) {
       return this;
     }
     const dateTo = new Date();
@@ -62,9 +62,10 @@ export class Transaction<T> {
       name: this.opts.name,
       type: this.opts.type,
     };
-    if (meta.status === Status.TRANSACTION_SUCCESSFUL) {
+    if (msg.status === Status.TRANSACTION_SUCCESSFUL) {
       this.meta = {
         ...basicMeta,
+        meta: msg.meta || null,
         status: Status.TRANSACTION_SUCCESSFUL,
       };
       return this;
@@ -72,7 +73,7 @@ export class Transaction<T> {
     this.meta = {
       ...basicMeta,
       status: Status.TRANSACTION_FAILED,
-      error: meta.error.message && null,
+      error: msg.error.message && null,
     };
 
     return this;
