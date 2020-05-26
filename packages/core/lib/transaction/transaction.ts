@@ -46,7 +46,7 @@ export interface CommitMsg {
 export const TRACING_HEADER = "squzy_trx_id";
 
 export class Transaction<T> {
-  private id = nanoid();
+  id = nanoid();
 
   private dateFrom = new Date();
 

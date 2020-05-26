@@ -1,9 +1,15 @@
-import { createApplication, Options, Type, Status } from "@squzy/core";
+import {
+  createApplication,
+  Options,
+  Type,
+  Status,
+  Transaction,
+} from "@squzy/core";
 import * as parseURI from "uri-parse-lib";
 
 export function createFetch(opts: Options) {
   const _app = createApplication(opts);
-  return (input: RequestInfo, init?: RequestInit) => {
+  return (input: RequestInfo, init?: RequestInit, parentId?: string) => {
     return _app.then((app) => {
       let transactionName;
       let reqUrl;
@@ -22,9 +28,10 @@ export function createFetch(opts: Options) {
       const { host, pathname } = parseURI(reqUrl);
       const trx = app.createTransaction(
         transactionName,
-        Type.TRANSACTION_TYPE_FETCH
+        Type.TRANSACTION_TYPE_FETCH,
+        parentId || null
       );
-      return fetch(input)
+      return fetch(input, init)
         .then((res) => {
           trx
             .setMeta({
