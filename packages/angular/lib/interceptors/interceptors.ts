@@ -23,6 +23,7 @@ export class SquzyInterceptor implements HttpInterceptor {
     if (reqUrl.startsWith("/")) {
       reqUrl = location.host + reqUrl;
     }
+    const method = request.method;
     const { host, pathname } = parseURI(reqUrl);
     return this.squzyAppService.getApplication().pipe(
       map((app) => {
@@ -40,6 +41,7 @@ export class SquzyInterceptor implements HttpInterceptor {
               meta: {
                 host,
                 path: pathname,
+                method,
               },
             });
             return req;
@@ -50,6 +52,7 @@ export class SquzyInterceptor implements HttpInterceptor {
               meta: {
                 host,
                 path: pathname,
+                method,
               },
               error: new Error(error.message),
             });

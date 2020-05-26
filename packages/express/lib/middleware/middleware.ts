@@ -18,6 +18,7 @@ export function createMiddleware(app: Application) {
       Type.TRANSACTION_TYPE_ROUTER,
       req.header(TRACING_HEADER)
     );
+    const method = req.method;
     res.locals[_key] = trx;
     onFinished(res, (err, _) => {
       if (err) {
@@ -25,6 +26,7 @@ export function createMiddleware(app: Application) {
           .setMeta({
             meta: {
               path,
+              method,
             },
             status: Status.TRANSACTION_FAILED,
             error: err,
@@ -35,6 +37,7 @@ export function createMiddleware(app: Application) {
         .setMeta({
           meta: {
             path,
+            method,
           },
           status: Status.TRANSACTION_SUCCESSFUL,
         })

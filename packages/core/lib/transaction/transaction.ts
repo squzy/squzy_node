@@ -14,6 +14,7 @@ export interface TransactionOpts {
 interface Meta {
   host?: string;
   path?: string;
+  method: string;
 }
 
 export interface CommitMsg {
