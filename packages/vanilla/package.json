@@ -24,6 +24,7 @@
     "url": "https://github.com/squzy/squzy_node/issues"
   },
   "dependencies": {
-    "uri-parse-lib": "^2.2.1"
+    "uri-parse-lib": "^2.2.1",
+    "@squzy/core": "^0.0.0"
   }
 }
