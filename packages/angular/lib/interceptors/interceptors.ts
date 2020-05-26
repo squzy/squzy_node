@@ -8,6 +8,7 @@ import {
 } from "@angular/common/http";
 import { map, switchMap, catchError, finalize } from "rxjs/operators";
 import { Observable, throwError } from "rxjs";
+import * as parseURI from "uri-parse-lib";
 import { SquzyAppService } from "../services/app.service";
 import { Type, Status } from "@squzy/core";
 
@@ -22,11 +23,11 @@ export class SquzyInterceptor implements HttpInterceptor {
     if (reqUrl.startsWith("/")) {
       reqUrl = location.host + reqUrl;
     }
-    const url = new URL(reqUrl);
+    const { host, pathname } = parseURI(reqUrl);
     return this.squzyAppService.getApplication().pipe(
       map((app) => {
         return app.createTransaction(
-          url.host + url.pathname,
+          host + pathname,
           Type.TRANSACTION_TYPE_HTTP
         );
       }),
@@ -37,8 +38,8 @@ export class SquzyInterceptor implements HttpInterceptor {
             trx.setMeta({
               status: Status.TRANSACTION_SUCCESSFUL,
               meta: {
-                host: url.host,
-                path: url.pathname,
+                host,
+                path: pathname,
               },
             });
             return req;
@@ -47,8 +48,8 @@ export class SquzyInterceptor implements HttpInterceptor {
             trx.setMeta({
               status: Status.TRANSACTION_FAILED,
               meta: {
-                host: url.host,
-                path: url.pathname,
+                host,
+                path: pathname,
               },
               error: new Error(error.message),
             });

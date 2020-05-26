@@ -34,6 +34,7 @@
     "rxjs": "^6.x.x"
   },
   "dependencies": {
-    "@squzy/core": "^0.0.0"
+    "@squzy/core": "^0.0.0",
+    "uri-parse-lib": "^2.2.1"
   }
 }
