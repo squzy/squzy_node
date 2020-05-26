@@ -3,23 +3,11 @@
 ## Usage
 
 ```typescript
-providers: [
-    {
-      provide: SQUZY_APPLICATION_TOKEN,
-      useFactory: () => ({
-        monitoringHost: "/api",
-        name: "FE",
-        host: window.location.host,
-      })
-    },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: SquzyInterceptor,
-      multi: true,
-      deps: [
-        SquzyAppService,
-      ]
-    },
-    SquzyAppService,
-]
+imports: [
+  SquzyMonitoringModule.forRoot({
+      monitoringHost: string; // host of service
+      name: string; // name of application
+      host: string; // host of application
+  })
+],
 ```
