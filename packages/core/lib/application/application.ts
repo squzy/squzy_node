@@ -9,7 +9,15 @@ export interface Options {
 }
 
 export class Application {
-  constructor(private id: string, private host: string) {}
+  constructor(
+    private id: string,
+    private host: string,
+    private tracingHeader: string
+  ) {}
+
+  getTracingHeaderKey() {
+    return this.tracingHeader;
+  }
 
   createTransaction<T>(
     name: string,
@@ -39,9 +47,15 @@ export function createApplication(opts: Options): Promise<Application> {
     .then<{
       data: {
         application_id: string;
+        tracing_header: string;
       };
     }>((body) => body.json())
     .then(
-      (res) => new Application(res.data.application_id, opts.monitoringHost)
+      (res) =>
+        new Application(
+          res.data.application_id,
+          opts.monitoringHost,
+          res.data.tracing_header
+        )
     );
 }

@@ -14,6 +14,7 @@ export function createFetch(opts: Options) {
       let transactionName;
       let reqUrl;
       let method = "GET";
+      let rqOpts: Request;
       if (typeof input === "string") {
         transactionName = input;
         reqUrl = input;
@@ -31,7 +32,29 @@ export function createFetch(opts: Options) {
         Type.TRANSACTION_TYPE_FETCH,
         parentId || null
       );
-      return fetch(input, init)
+      if (typeof input === "string") {
+        rqOpts = {
+          method,
+          url: input,
+          headers: new Headers({
+            [app.getTracingHeaderKey()]: trx.id,
+          }),
+        } as Request;
+      } else {
+        if (input.headers) {
+          input.headers.append(app.getTracingHeaderKey(), trx.id);
+        }
+        rqOpts = {
+          ...input,
+          headers: input.headers
+            ? input.headers
+            : new Headers({
+                [app.getTracingHeaderKey()]: trx.id,
+              }),
+        };
+      }
+
+      return fetch(rqOpts, init)
         .then((res) => {
           trx
             .setMeta({

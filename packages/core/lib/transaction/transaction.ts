@@ -43,8 +43,6 @@ export interface CommitMsg {
   error?: Error;
 }
 
-export const TRACING_HEADER = "squzy_trx_id";
-
 export class Transaction<T> {
   id = nanoid();
 

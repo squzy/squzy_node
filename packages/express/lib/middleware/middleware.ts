@@ -1,11 +1,5 @@
 import { Request, Response } from "express";
-import {
-  Application,
-  Type,
-  Status,
-  Transaction,
-  TRACING_HEADER,
-} from "@squzy/core";
+import { Application, Type, Status, Transaction } from "@squzy/core";
 import * as onFinished from "on-finished";
 
 const _key = "squzy_express";
@@ -16,7 +10,7 @@ export function createMiddleware(app: Application) {
     const trx = app.createTransaction(
       req.baseUrl + req.route.path,
       Type.TRANSACTION_TYPE_ROUTER,
-      req.header(TRACING_HEADER)
+      req.header(app.getTracingHeaderKey())
     );
     const method = req.method;
     res.locals[_key] = trx;
