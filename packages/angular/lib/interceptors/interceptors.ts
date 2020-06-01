@@ -6,7 +6,7 @@ import {
   HttpEvent,
   HttpErrorResponse,
 } from "@angular/common/http";
-import { map, switchMap, catchError, finalize } from "rxjs/operators";
+import { map, switchMap, catchError, finalize, tap } from "rxjs/operators";
 import { Observable, throwError } from "rxjs";
 import * as parseURI from "uri-parse-lib";
 import { SquzyAppService } from "../services/app.service";
@@ -43,27 +43,19 @@ export class SquzyInterceptor implements HttpInterceptor {
 
         return next.handle(clonedRequest).pipe(
           finalize(() => trx.end()),
-          map((req) => {
+          tap(() =>
             trx.setMeta({
-              status: Status.TRANSACTION_SUCCESSFUL,
-              meta: {
-                host,
-                path: pathname,
-                method,
-              },
-            });
+              host,
+              path: pathname,
+              method,
+            })
+          ),
+          map((req) => {
+            trx.setStatus(Status.TRANSACTION_SUCCESSFUL);
             return req;
           }),
           catchError((error: HttpErrorResponse) => {
-            trx.setMeta({
-              status: Status.TRANSACTION_FAILED,
-              meta: {
-                host,
-                path: pathname,
-                method,
-              },
-              error: new Error(error.message),
-            });
+            trx.setStatus(Status.TRANSACTION_FAILED);
             return throwError(error);
           })
         );

@@ -13,29 +13,16 @@ export function createMiddleware(app: Application) {
       req.header(app.getTracingHeaderKey())
     );
     const method = req.method;
+    trx.setMeta({
+      path,
+      method,
+    });
     res.locals[_key] = trx;
     onFinished(res, (err, _) => {
       if (err) {
-        return trx
-          .setMeta({
-            meta: {
-              path,
-              method,
-            },
-            status: Status.TRANSACTION_FAILED,
-            error: err,
-          })
-          .end();
+        return trx.end(Status.TRANSACTION_FAILED, err);
       }
-      return trx
-        .setMeta({
-          meta: {
-            path,
-            method,
-          },
-          status: Status.TRANSACTION_SUCCESSFUL,
-        })
-        .end();
+      return trx.end(Status.TRANSACTION_SUCCESSFUL);
     });
   };
 }

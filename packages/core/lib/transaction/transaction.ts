@@ -48,57 +48,63 @@ export class Transaction<T> {
 
   private dateFrom = new Date();
 
+  private dateTo = null;
+
   private commited = false;
 
-  private meta: TransactionCommitMsg;
+  private meta: Meta;
+
+  private status: Status;
 
   constructor(protected opts: TransactionOpts) {}
 
-  setMeta(msg: CommitMsg) {
-    if (!msg) {
+  setStatus(status: Status, end = true) {
+    this.status = status;
+    if (end) {
+      this.dateTo = new Date();
+    }
+  }
+
+  setMeta(meta: Meta) {
+    if (!meta) {
       return this;
     }
-    const dateTo = new Date();
-    const basicMeta = {
-      id: this.id,
-      dateFrom: this.dateFrom.toISOString(),
-      dateTo: dateTo.toISOString(),
-      parentId: (this.opts.parent && this.opts.parent) || null,
-      name: this.opts.name,
-      type: this.opts.type,
-    };
-    if (msg.status === Status.TRANSACTION_SUCCESSFUL) {
-      this.meta = {
-        ...basicMeta,
-        meta: msg.meta || null,
-        status: Status.TRANSACTION_SUCCESSFUL,
-      };
-      return this;
-    }
-
-    this.meta = {
-      ...basicMeta,
-      status: Status.TRANSACTION_FAILED,
-      meta: msg.meta || null,
-      error: {
-        message: msg.error.message || null,
-      },
-    };
-
+    this.meta = meta;
     return this;
   }
 
-  end() {
+  end(status: Status = Status.TRANSACTION_SUCCESSFUL, error: Error = null) {
     if (!this.meta || this.commited) {
       return;
     }
     this.commited = true;
+    const dateTo = new Date();
+
+    const req = {
+      id: this.id,
+      dateFrom: this.dateFrom.toISOString(),
+      dateTo:
+        (this.dateTo && this.dateTo.toISOString()) || dateTo.toISOString(),
+      parentId: (this.opts.parent && this.opts.parent) || null,
+      name: this.opts.name,
+      type: this.opts.type,
+      status: this.status || status,
+      meta: this.meta,
+    } as TransactionCommitMsg;
+
+    if (status === Status.TRANSACTION_FAILED) {
+      req.error =
+        error && error instanceof Error
+          ? { message: error.message }
+          : undefined;
+    }
+
     try {
       fetch(
         `${this.opts.applicationInfo.host}/v1/applications/${this.opts.applicationInfo.id}/transactions`,
         {
           method: "POST",
-          body: JSON.stringify(this.meta),
+          body: JSON.stringify(req),
         }
       );
     } catch (err) {}

@@ -53,33 +53,19 @@ export function createFetch(opts: Options) {
               }),
         };
       }
+      trx.setMeta({
+        host,
+        path: pathname,
+        method,
+      });
 
       return fetch(rqOpts, init)
         .then((res) => {
-          trx
-            .setMeta({
-              status: Status.TRANSACTION_SUCCESSFUL,
-              meta: {
-                host,
-                path: pathname,
-                method,
-              },
-            })
-            .end();
+          trx.end(Status.TRANSACTION_SUCCESSFUL);
           return res;
         })
         .catch((err) => {
-          trx
-            .setMeta({
-              status: Status.TRANSACTION_FAILED,
-              meta: {
-                host,
-                path: pathname,
-                method,
-              },
-              error: err,
-            })
-            .end();
+          trx.end(Status.TRANSACTION_FAILED, err);
           return new Error(err);
         });
     });
