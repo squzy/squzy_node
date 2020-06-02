@@ -1,29 +1,20 @@
 import { nanoid } from "nanoid";
 import { Type, Status } from "../enums/enums";
+import { Application } from "../application/application";
 
 export interface TransactionOpts {
   name: string;
-  applicationInfo: {
-    id: string;
-    host: string;
-  };
   parent?: string;
   type: Type;
 }
 
-interface Meta {
+export interface Meta {
   host?: string;
   path?: string;
   method: string;
 }
 
-export interface CommitMsg {
-  error?: Error;
-  meta?: Meta;
-  status: Status;
-}
-
-export interface TransactionCommitMsg {
+interface TransactionCommitMsg {
   id: string;
   parentId?: string;
   name: string;
@@ -37,12 +28,6 @@ export interface TransactionCommitMsg {
   meta?: Meta;
 }
 
-export interface CommitMsg {
-  status: Status;
-  meta?: Meta;
-  error?: Error;
-}
-
 export class Transaction<T> {
   id = nanoid();
 
@@ -54,15 +39,23 @@ export class Transaction<T> {
 
   private meta: Meta;
 
+  private error: {
+    message: string;
+  } = null;
+
   private status: Status;
 
-  constructor(protected opts: TransactionOpts) {}
+  constructor(
+    protected opts: TransactionOpts,
+    private application: Application
+  ) {}
 
   setStatus(status: Status, end = true) {
     this.status = status;
     if (end) {
       this.dateTo = new Date();
     }
+    return this;
   }
 
   setMeta(meta: Meta) {
@@ -73,26 +66,36 @@ export class Transaction<T> {
     return this;
   }
 
+  setError(error: Error = null) {
+    if (!error || !(error instanceof Error) || this.error) {
+      return this;
+    }
+    this.error = {
+      message: error.message,
+    };
+    return this;
+  }
+
   end(status: Status = Status.TRANSACTION_SUCCESSFUL, error: Error = null) {
-    if (!this.meta || this.commited) {
+    if (!this.meta || this.commited || !this.opts) {
       return;
     }
     this.commited = true;
-    const dateTo = new Date();
-
+    const finalStatus = this.status || status;
     const req = {
       id: this.id,
       dateFrom: this.dateFrom.toISOString(),
       dateTo:
-        (this.dateTo && this.dateTo.toISOString()) || dateTo.toISOString(),
-      parentId: (this.opts.parent && this.opts.parent) || null,
+        (this.dateTo && this.dateTo.toISOString()) || new Date().toISOString(),
+      parentId: this.opts.parent || null,
       name: this.opts.name,
       type: this.opts.type,
-      status: this.status || status,
+      status: finalStatus,
       meta: this.meta,
+      error: finalStatus === Status.TRANSACTION_SUCCESSFUL ? null : this.error,
     } as TransactionCommitMsg;
 
-    if (status === Status.TRANSACTION_FAILED) {
+    if (status === Status.TRANSACTION_FAILED && !this.error) {
       req.error =
         error && error instanceof Error
           ? { message: error.message }
@@ -101,7 +104,7 @@ export class Transaction<T> {
 
     try {
       fetch(
-        `${this.opts.applicationInfo.host}/v1/applications/${this.opts.applicationInfo.id}/transactions`,
+        `${this.application.getMonitoringHost()}/v1/applications/${this.application.getId()}/transactions`,
         {
           method: "POST",
           body: JSON.stringify(req),
@@ -111,11 +114,13 @@ export class Transaction<T> {
   }
 
   createTransaction<R>(name: string, type: Type): Transaction<R> {
-    return new Transaction({
-      name,
-      parent: this.id,
-      applicationInfo: this.opts.applicationInfo,
-      type,
-    });
+    return new Transaction(
+      {
+        name,
+        parent: this.id,
+        type,
+      },
+      this.application
+    );
   }
 }

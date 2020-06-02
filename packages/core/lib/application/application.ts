@@ -4,16 +4,29 @@ import { Type } from "../enums/enums";
 
 export interface Options {
   monitoringHost: string;
-  name: string;
   host: string;
+  name: string;
 }
 
 export class Application {
   constructor(
     private id: string,
     private host: string,
+    private monitoringHost: string,
     private tracingHeader: string
   ) {}
+
+  getId() {
+    return this.id;
+  }
+
+  getHost() {
+    return this.host;
+  }
+
+  getMonitoringHost() {
+    return this.monitoringHost;
+  }
 
   getTracingHeaderKey() {
     return this.tracingHeader;
@@ -24,15 +37,14 @@ export class Application {
     type: Type,
     parent: string = null
   ): Transaction<T> {
-    return new Transaction<T>({
-      name,
-      applicationInfo: {
-        id: this.id,
-        host: this.host,
+    return new Transaction<T>(
+      {
+        name,
+        type,
+        parent,
       },
-      type,
-      parent,
-    });
+      this
+    );
   }
 }
 
@@ -41,7 +53,7 @@ export function createApplication(opts: Options): Promise<Application> {
     method: "POST",
     body: JSON.stringify({
       name: opts.name,
-      host: opts.monitoringHost,
+      host: opts.host,
     }),
   })
     .then<{
@@ -54,6 +66,7 @@ export function createApplication(opts: Options): Promise<Application> {
       (res) =>
         new Application(
           res.data.application_id,
+          opts.host,
           opts.monitoringHost,
           res.data.tracing_header
         )

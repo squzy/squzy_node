@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { Application, Type, Status, Transaction } from "@squzy/core";
 import * as onFinished from "on-finished";
 
-const _key = "squzy_express";
+const _key = "__squzy_transaction";
 
 export function createMiddleware(app: Application) {
   return (req: Request, res: Response) => {
@@ -16,6 +16,7 @@ export function createMiddleware(app: Application) {
     trx.setMeta({
       path,
       method,
+      host: app.getHost(),
     });
     res.locals[_key] = trx;
     onFinished(res, (err, _) => {
