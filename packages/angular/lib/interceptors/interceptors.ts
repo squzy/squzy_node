@@ -8,7 +8,7 @@ import {
 } from "@angular/common/http";
 import { map, switchMap, catchError, finalize, tap } from "rxjs/operators";
 import { Observable, throwError } from "rxjs";
-import * as parseURI from "uri-parse-lib";
+import { parseURI } from "uri-parse-lib";
 import { SquzyAppService } from "../services/app.service";
 import { Type, Status } from "@squzy/core";
 

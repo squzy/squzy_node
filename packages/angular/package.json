@@ -35,6 +35,6 @@
   },
   "dependencies": {
     "@squzy/core": "^0.0.0",
-    "uri-parse-lib": "^2.2.1"
+    "uri-parse-lib": "^2.3.0"
   }
 }
