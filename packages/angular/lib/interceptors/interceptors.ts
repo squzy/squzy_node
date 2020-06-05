@@ -10,7 +10,7 @@ import { map, switchMap, catchError, finalize, tap } from "rxjs/operators";
 import { Observable, throwError } from "rxjs";
 import * as parseURI from "uri-parse-lib";
 import { SquzyAppService } from "../services/app.service";
-import { Type, Status, Transaction, Application } from "@squzy/core";
+import { Type, Status } from "@squzy/core";
 
 @Injectable()
 export class SquzyInterceptor implements HttpInterceptor {
@@ -38,7 +38,7 @@ export class SquzyInterceptor implements HttpInterceptor {
       }),
       switchMap(({ app, trx }) => {
         const clonedRequest = request.clone({
-          headers: request.headers.set(app.getTracingHeaderKey(), trx.id),
+          headers: request.headers.set(app.getTracingHeaderKey(), trx.getId()),
         });
 
         return next.handle(clonedRequest).pipe(

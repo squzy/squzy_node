@@ -1,18 +1,33 @@
 import fetch from "cross-fetch";
-import { Transaction } from "../transaction/transaction";
+import { ITransaction, createTransaction } from "../transaction/transaction";
 import { Type } from "../enums/enums";
 
 export interface Options {
-  monitoringHost: string;
+  apiHost: string;
   host: string;
   name: string;
 }
 
-export class Application {
+export interface Creator {
+  createTransaction(
+    name: string,
+    type: Type,
+    parent?: string | ITransaction
+  ): ITransaction;
+}
+
+export interface IApp extends Creator {
+  getId(): string;
+  getHost(): string;
+  getTracingHeaderKey(): string;
+  getApiHost(): string;
+}
+
+class Application implements IApp {
   constructor(
     private id: string,
     private host: string,
-    private monitoringHost: string,
+    private apiHost: string,
     private tracingHeader: string
   ) {}
 
@@ -24,8 +39,8 @@ export class Application {
     return this.host;
   }
 
-  getMonitoringHost() {
-    return this.monitoringHost;
+  getApiHost() {
+    return this.apiHost;
   }
 
   getTracingHeaderKey() {
@@ -35,21 +50,20 @@ export class Application {
   createTransaction<T>(
     name: string,
     type: Type,
-    parent: string = null
-  ): Transaction<T> {
-    return new Transaction<T>(
-      {
-        name,
-        type,
-        parent,
-      },
-      this
-    );
+    parent: string | ITransaction = null
+  ): ITransaction {
+    if (!parent) {
+      return createTransaction<T>(name, type, this, null);
+    }
+    if (typeof parent === "string") {
+      return createTransaction<T>(name, type, this, parent);
+    }
+    return createTransaction<T>(name, type, this, parent.getId());
   }
 }
 
-export function createApplication(opts: Options): Promise<Application> {
-  return fetch(`${opts.monitoringHost}/v1/applications`, {
+export function createApplication(opts: Options): Promise<IApp> {
+  return fetch(`${opts.apiHost}/v1/applications`, {
     method: "POST",
     body: JSON.stringify({
       name: opts.name,
@@ -67,7 +81,7 @@ export function createApplication(opts: Options): Promise<Application> {
         new Application(
           res.data.application_id,
           opts.host,
-          opts.monitoringHost,
+          opts.apiHost,
           res.data.tracing_header
         )
     );

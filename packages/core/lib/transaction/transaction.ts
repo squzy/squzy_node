@@ -1,11 +1,19 @@
 import { nanoid } from "nanoid";
 import { Type, Status } from "../enums/enums";
-import { Application } from "../application/application";
+import { Creator, IApp } from "../application/application";
 
-export interface TransactionOpts {
+interface TransactionOpts {
   name: string;
-  parent?: string;
   type: Type;
+  parent?: string;
+}
+
+export interface ITransaction {
+  setMeta(meta: Meta): ITransaction;
+  setStatus(status: Status, end?: boolean): ITransaction;
+  end(status?: Status, error?: Error): void;
+  setError(error?: Error): ITransaction;
+  getId(): string;
 }
 
 export interface Meta {
@@ -28,8 +36,8 @@ interface TransactionCommitMsg {
   meta?: Meta;
 }
 
-export class Transaction<T> {
-  id = nanoid();
+class Transaction<T> implements ITransaction, Creator {
+  private id = nanoid();
 
   private dateFrom = new Date();
 
@@ -45,10 +53,11 @@ export class Transaction<T> {
 
   private status: Status;
 
-  constructor(
-    protected opts: TransactionOpts,
-    private application: Application
-  ) {}
+  constructor(protected opts: TransactionOpts, private application: IApp) {}
+
+  getId() {
+    return this.id;
+  }
 
   setStatus(status: Status, end = true) {
     this.status = status;
@@ -104,7 +113,7 @@ export class Transaction<T> {
 
     try {
       fetch(
-        `${this.application.getMonitoringHost()}/v1/applications/${this.application.getId()}/transactions`,
+        `${this.application.getApiHost()}/v1/applications/${this.application.getId()}/transactions`,
         {
           method: "POST",
           body: JSON.stringify(req),
@@ -114,13 +123,32 @@ export class Transaction<T> {
   }
 
   createTransaction<R>(name: string, type: Type): Transaction<R> {
-    return new Transaction(
-      {
-        name,
-        parent: this.id,
-        type,
-      },
-      this.application
-    );
+    return createTransaction(name, type, this.application, this.id);
   }
+}
+
+export function createTransaction<T>(
+  name: string,
+  type: Type,
+  app: IApp,
+  parent: string | ITransaction = null
+): Transaction<T> {
+  let parentId: string;
+  if (!parent) {
+    parent = null;
+  }
+  if (typeof parent === "string") {
+    parentId = parent;
+  } else {
+    parentId = parent.getId();
+  }
+
+  return new Transaction<T>(
+    {
+      name,
+      type,
+      parent: parentId,
+    },
+    app
+  );
 }

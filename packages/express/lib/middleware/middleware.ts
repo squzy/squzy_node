@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
-import { Application, Type, Status, Transaction } from "@squzy/core";
+import { IApp, Type, Status, ITransaction } from "@squzy/core";
 import * as onFinished from "on-finished";
 
 const _key = "__squzy_transaction";
 
-export function createMiddleware(app: Application) {
+export function createMiddleware(app: IApp) {
   return (req: Request, res: Response) => {
     const path = req.baseUrl + req.route.path;
     const trx = app.createTransaction(
@@ -28,6 +28,6 @@ export function createMiddleware(app: Application) {
   };
 }
 
-export function getCurrentTransaction<T>(res: Response): Transaction<T> {
+export function getCurrentTransaction<T>(res: Response): ITransaction {
   return res.locals[_key];
 }

@@ -1,10 +1,4 @@
-import {
-  createApplication,
-  Options,
-  Type,
-  Status,
-  Transaction,
-} from "@squzy/core";
+import { createApplication, Options, Type, Status } from "@squzy/core";
 import * as parseURI from "uri-parse-lib";
 
 export function createFetch(opts: Options) {
@@ -37,19 +31,19 @@ export function createFetch(opts: Options) {
           method,
           url: input,
           headers: new Headers({
-            [app.getTracingHeaderKey()]: trx.id,
+            [app.getTracingHeaderKey()]: trx.getId(),
           }),
         } as Request;
       } else {
         if (input.headers) {
-          input.headers.append(app.getTracingHeaderKey(), trx.id);
+          input.headers.append(app.getTracingHeaderKey(), trx.getId());
         }
         rqOpts = {
           ...input,
           headers: input.headers
             ? input.headers
             : new Headers({
-                [app.getTracingHeaderKey()]: trx.id,
+                [app.getTracingHeaderKey()]: trx.getId(),
               }),
         };
       }
