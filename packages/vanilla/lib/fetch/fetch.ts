@@ -1,5 +1,5 @@
 import { createApplication, Options, Type, Status } from "@squzy/core";
-import * as parseURI from "uri-parse-lib";
+import { parseURI } from "uri-parse-lib";
 
 export function createFetch(opts: Options) {
   const _app = createApplication(opts);
