@@ -22,7 +22,7 @@ export function createFetch(opts: Options) {
       }
       const { host, pathname } = parseURI(reqUrl);
       const trx = app.createTransaction(
-        transactionName,
+        host + pathname,
         Type.TRANSACTION_TYPE_FETCH,
         parentId || null
       );
