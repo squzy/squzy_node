@@ -6,6 +6,7 @@ export interface Options {
   apiHost: string;
   host: string;
   name: string;
+  agentId?: string;
 }
 
 export interface Creator {
