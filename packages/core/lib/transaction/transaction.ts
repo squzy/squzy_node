@@ -36,12 +36,16 @@ interface TransactionCommitMsg {
   meta?: Meta;
 }
 
+const toNano = (t: number) => {
+  return t * 1000000;
+};
+
 class Transaction<T> implements ITransaction, Creator {
   private id = nanoid();
 
-  private dateFrom = new Date();
+  private dateFrom: string = `${toNano(Date.now())}`;
 
-  private dateTo = null;
+  private dateTo: string;
 
   private commited = false;
 
@@ -62,7 +66,7 @@ class Transaction<T> implements ITransaction, Creator {
   setStatus(status: Status, end = true) {
     this.status = status;
     if (end) {
-      this.dateTo = new Date();
+      this.dateTo = `${toNano(Date.now())}`;
     }
     return this;
   }
@@ -93,9 +97,8 @@ class Transaction<T> implements ITransaction, Creator {
     const finalStatus = this.status || status;
     const req = {
       id: this.id,
-      dateFrom: this.dateFrom.toISOString(),
-      dateTo:
-        (this.dateTo && this.dateTo.toISOString()) || new Date().toISOString(),
+      dateFrom: this.dateFrom,
+      dateTo: this.dateTo || `${toNano(Date.now())}`,
       parentId: this.opts.parent || null,
       name: this.opts.name,
       type: this.opts.type,
