@@ -15,7 +15,9 @@
       ],
       "paths": {
         "@squzy/core": ["core/lib"],
-        "@squzy/express": ["core/express"]
+        "@squzy/express": ["core/express"],
+        "@squzy/angular": ["core/angular"],
+        "@squzy/vanilla": ["core/vanilla"]
       }
     },
     "exclude": [
