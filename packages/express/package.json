@@ -34,5 +34,6 @@
     "@squzy/core": "^0.0.2-alpha.0",
     "@types/on-finished": "^2.3.1",
     "on-finished": "^2.3.0"
-  }
+  },
+  "gitHead": "55b37fc1ebfefef08e79829dcbb00f7d16658dd0"
 }

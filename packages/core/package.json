@@ -11,7 +11,7 @@
     "lib": "lib"
   },
   "files": [
-    "lib"
+    "dist"
   ],
   "repository": {
     "type": "git",
@@ -26,5 +26,6 @@
   "dependencies": {
     "cross-fetch": "^3.0.4",
     "nanoid": "^3.1.9"
-  }
+  },
+  "gitHead": "55b37fc1ebfefef08e79829dcbb00f7d16658dd0"
 }

@@ -12,7 +12,7 @@
     "test": "__tests__"
   },
   "files": [
-    "lib"
+    "dist"
   ],
   "repository": {
     "type": "git",
@@ -27,5 +27,6 @@
   "dependencies": {
     "@squzy/core": "^0.0.2-alpha.0",
     "uri-parse-lib": "^2.3.0"
-  }
+  },
+  "gitHead": "55b37fc1ebfefef08e79829dcbb00f7d16658dd0"
 }
