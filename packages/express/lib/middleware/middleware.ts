@@ -1,11 +1,11 @@
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 import { IApp, Type, Status, ITransaction } from "@squzy/core";
 import * as onFinished from "on-finished";
 
 const _key = "__squzy_transaction";
 
 export function createMiddleware(app: IApp) {
-  return (req: Request, res: Response) => {
+  return (req: Request, res: Response, next: NextFunction) => {
     const path = req.baseUrl + ((req.route && req.route.path) || "");
     const trx = app.createTransaction(
       path,
@@ -19,12 +19,14 @@ export function createMiddleware(app: IApp) {
       host: app.getHost(),
     });
     res.locals[_key] = trx;
+
     onFinished(res, (err, _) => {
       if (err) {
         return trx.end(Status.TRANSACTION_FAILED, err);
       }
       return trx.end(Status.TRANSACTION_SUCCESSFUL);
     });
+    next();
   };
 }
 
