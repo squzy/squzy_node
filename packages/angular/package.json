@@ -5,7 +5,8 @@
   "author": "Iurii Panarin <tduble94@gmail.com>",
   "homepage": "https://github.com/squzy/squzy_node#readme",
   "license": "ISC",
-  "main": "lib/angular.js",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
   "directories": {
     "lib": "lib",
     "test": "__tests__"
@@ -18,7 +19,7 @@
     "url": "git+https://github.com/squzy/squzy_node.git"
   },
   "scripts": {
-    "tsc": "tsc"
+    "tsc": "rm -rf dist && tsc"
   },
   "bugs": {
     "url": "https://github.com/squzy/squzy_node/issues"
