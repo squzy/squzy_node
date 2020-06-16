@@ -5,7 +5,7 @@
     "lerna": "lerna",
     "format:code": "prettier --write \"packages/**/*.{ts,js,?css}\"",
     "format": "npm-run-all -p format:code",
-    "publish": "lerna run publish"
+    "publish": "lerna publish"
   },
   "husky": {
     "hooks": {
