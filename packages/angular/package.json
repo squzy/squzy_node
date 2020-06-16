@@ -1,6 +1,6 @@
 {
   "name": "@squzy/angular",
-  "version": "0.0.3-alpha.0",
+  "version": "0.0.4-alpha.0",
   "description": "> TODO: description",
   "author": "Iurii Panarin <tduble94@gmail.com>",
   "homepage": "https://github.com/squzy/squzy_node#readme",
@@ -35,7 +35,7 @@
     "rxjs": "^6.x.x"
   },
   "dependencies": {
-    "@squzy/core": "^0.0.3-alpha.0",
+    "@squzy/core": "^0.0.4-alpha.0",
     "uri-parse-lib": "^2.3.0"
   },
   "gitHead": "8d2b85cd2652fac8e53ad4e17d9c84772b75d645"
