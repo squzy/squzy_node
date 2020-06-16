@@ -1,6 +1,6 @@
 {
   "name": "@squzy/express",
-  "version": "0.0.8-alpha.0",
+  "version": "0.0.9-alpha.0",
   "description": "Basic wrapper for Express",
   "author": "Iurii Panarin <tduble94@gmail.com>",
   "homepage": "https://github.com/squzy/squzy_node#readme",
@@ -34,7 +34,7 @@
     "express": "^3.x.x"
   },
   "dependencies": {
-    "@squzy/core": "^0.0.7-alpha.0",
+    "@squzy/core": "^0.0.9-alpha.0",
     "@types/on-finished": "^2.3.1",
     "on-finished": "^2.3.0"
   },
