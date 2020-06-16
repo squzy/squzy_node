@@ -1,6 +1,7 @@
 import { nanoid } from "nanoid";
 import { Type, Status } from "../enums/enums";
 import { Creator, IApp } from "../application/application";
+import fetch from "cross-fetch";
 
 interface TransactionOpts {
   name: string;
