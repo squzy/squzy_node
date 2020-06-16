@@ -139,11 +139,12 @@ export function createTransaction<T>(
   let parentId: string;
   if (!parent) {
     parent = null;
-  }
-  if (typeof parent === "string") {
-    parentId = parent;
   } else {
-    parentId = parent.getId();
+    if (typeof parent === "string") {
+      parentId = parent;
+    } else {
+      parentId = parent.getId();
+    }
   }
 
   return new Transaction<T>(

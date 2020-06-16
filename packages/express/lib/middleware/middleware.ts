@@ -6,9 +6,9 @@ const _key = "__squzy_transaction";
 
 export function createMiddleware(app: IApp) {
   return (req: Request, res: Response) => {
-    const path = req.baseUrl + req.route.path;
+    const path = req.baseUrl + ((req.route && req.route.path) || "");
     const trx = app.createTransaction(
-      req.baseUrl + req.route.path,
+      path,
       Type.TRANSACTION_TYPE_ROUTER,
       req.header(app.getTracingHeaderKey())
     );
