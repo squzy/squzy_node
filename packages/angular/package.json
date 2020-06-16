@@ -18,6 +18,9 @@
     "type": "git",
     "url": "git+https://github.com/squzy/squzy_node.git"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "tsc": "rm -rf dist && tsc"
   },
