@@ -1,10 +1,9 @@
-import { createApplication, Options, Type, Status } from "@squzy/core";
+import { Type, Status, IApp } from "@squzy/core";
 import { parseURI } from "uri-parse-lib";
 
-export function createFetch(opts: Options) {
-  const _app = createApplication(opts);
+export function createFetch(application: IApp) {
   return (input: RequestInfo, init?: RequestInit, parentId?: string) => {
-    return _app.then((app) => {
+    return Promise.resolve(application).then((app) => {
       let transactionName;
       let reqUrl;
       let method = "GET";

@@ -12,7 +12,7 @@ It is should be on route level, because on root level it is impossible to get ac
 
 ```typescript
 import { createMiddleware } from "@squzy/express"
-
+import { createApplication } from "@squzy/core"
 
 const application = await createApplication({
     apiHost: "http://localhost:8080",
