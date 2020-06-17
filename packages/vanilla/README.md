@@ -1,5 +1,7 @@
 # @squzy/vanilla
 
+*BROWSER PACKAGE*
+
 Package for usage that inside vanilla applications
 
 ## How to use
