@@ -1,6 +1,6 @@
 {
   "name": "@squzy/angular",
-  "version": "0.1.4-alpha.0",
+  "version": "0.1.5-alpha.0",
   "description": "Basic angular wrapper for squzy monitoring",
   "author": "Iurii Panarin <tduble94@gmail.com>",
   "homepage": "https://github.com/squzy/squzy_node#readme",
@@ -38,7 +38,7 @@
     "rxjs": "^6.x.x"
   },
   "dependencies": {
-    "@squzy/core": "^0.1.4-alpha.0",
+    "@squzy/core": "^0.1.5-alpha.0",
     "uri-parse-lib": "^2.3.0"
   },
   "gitHead": "a3be13ffa02b229eb6b4556b2051c7aaa08abaac"
