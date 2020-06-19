@@ -9,7 +9,9 @@ import { SquzyInterceptor } from "../interceptors/interceptors";
 
 @NgModule({})
 export class SquzyMonitoringModule {
-  static forRoot(application: Promise<IApp>): ModuleWithProviders {
+  static forRoot(
+    application: Promise<IApp>
+  ): ModuleWithProviders<SquzyMonitoringModule> {
     return {
       ngModule: SquzyMonitoringModule,
       providers: [
