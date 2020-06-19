@@ -1,6 +1,6 @@
 {
   "name": "@squzy/express",
-  "version": "0.1.9-alpha.0",
+  "version": "0.1.10-alpha.0",
   "description": "Basic wrapper for Squzy Monitoring Express",
   "author": "Iurii Panarin <tduble94@gmail.com>",
   "homepage": "https://github.com/squzy/squzy_node#readme",
@@ -27,14 +27,13 @@
     "url": "https://github.com/squzy/squzy_node/issues"
   },
   "peerDependencies": {
-    "express": "^3.x.x"
+    "express": ">3.x.x"
   },
   "devDependencies": {
-    "@types/express": "^4.17.6",
-    "express": "^3.x.x"
+    "@types/express": "^4.17.6"
   },
   "dependencies": {
-    "@squzy/core": "^0.1.9-alpha.0",
+    "@squzy/core": "^0.1.10-alpha.0",
     "@types/on-finished": "^2.3.1",
     "on-finished": "^2.3.0"
   },
