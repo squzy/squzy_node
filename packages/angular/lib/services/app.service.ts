@@ -3,7 +3,7 @@ import { Options, IApp } from "@squzy/core";
 import { from } from "rxjs";
 import { publishReplay, refCount } from "rxjs/operators";
 
-export const SQUZY_APPLICATION_TOKEN = new InjectionToken<Options>(
+export const SQUZY_APPLICATION_TOKEN = new InjectionToken<Promise<IApp>>(
   "SQUZY_APPLICATION_TOKEN"
 );
 
