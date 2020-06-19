@@ -28,14 +28,9 @@
     "url": "https://github.com/squzy/squzy_node/issues"
   },
   "peerDependencies": {
-    "@angular/common": "^6.x.x",
-    "@angular/core": "^6.x.x",
-    "rxjs": "^6.x.x"
-  },
-  "devDependencies": {
-    "@angular/common": "^6.x.x",
-    "@angular/core": "^6.x.x",
-    "rxjs": "^6.x.x"
+    "@angular/common": ">6.x.x",
+    "@angular/core": ">6.x.x",
+    "rxjs": ">6.x.x"
   },
   "dependencies": {
     "@squzy/core": "^0.1.8-alpha.0",
