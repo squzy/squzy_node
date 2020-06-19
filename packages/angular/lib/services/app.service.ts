@@ -7,7 +7,9 @@ export const SQUZY_APPLICATION_TOKEN = new InjectionToken<Options>(
   "SQUZY_APPLICATION_TOKEN"
 );
 
-@Injectable()
+@Injectable({
+  providedIn: "root",
+})
 export class SquzyAppService {
   private app$ = of(this.application).pipe(publishReplay(1), refCount());
 

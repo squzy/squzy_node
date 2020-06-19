@@ -3,7 +3,7 @@ import {
   SquzyAppService,
   SQUZY_APPLICATION_TOKEN,
 } from "../services/app.service";
-import { Options, createApplication, IApp } from "@squzy/core";
+import { IApp } from "@squzy/core";
 import { HTTP_INTERCEPTORS } from "@angular/common/http";
 import { SquzyInterceptor } from "../interceptors/interceptors";
 
