@@ -27,7 +27,7 @@
     "url": "https://github.com/squzy/squzy_node/issues"
   },
   "peerDependencies": {
-    "express": ">3.x.x"
+    "express": ">3.0.0"
   },
   "devDependencies": {
     "@types/express": "^4.17.6"
