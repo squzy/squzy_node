@@ -56,7 +56,7 @@ class Transaction<T> implements ITransaction, Creator {
     message: string;
   } = null;
 
-  private status: Status;
+  private status: Status = Status.TRANSACTION_UNSPECIFIED;
 
   constructor(protected opts: TransactionOpts, private application: IApp) {}
 
@@ -64,11 +64,12 @@ class Transaction<T> implements ITransaction, Creator {
     return this.id;
   }
 
-  setStatus(status: Status, end = true) {
+  setStatus(status: Status = Status.TRANSACTION_SUCCESSFUL, end = true) {
     this.status = status;
     if (end) {
       this.dateTo = `${toNano(Date.now())}`;
     }
+    console.log(status)
     return this;
   }
 
@@ -108,12 +109,13 @@ class Transaction<T> implements ITransaction, Creator {
       error: finalStatus === Status.TRANSACTION_SUCCESSFUL ? null : this.error,
     } as TransactionCommitMsg;
 
-    if (status === Status.TRANSACTION_FAILED && !this.error) {
+    if (finalStatus === Status.TRANSACTION_FAILED && !req.error) {
       req.error =
         error && error instanceof Error
           ? { message: error.message }
           : undefined;
     }
+    console.log(req)
 
     try {
       fetch(

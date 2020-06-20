@@ -62,7 +62,6 @@ export class SquzyInterceptor implements HttpInterceptor {
             return req;
           }),
           catchError((error: HttpErrorResponse) => {
-            console.log(error, "error here")
             trx.setStatus(Status.TRANSACTION_FAILED).setError(error);
             return throwError(error);
           })
