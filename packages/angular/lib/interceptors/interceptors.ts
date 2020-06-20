@@ -20,8 +20,10 @@ export class SquzyInterceptor implements HttpInterceptor {
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
     let reqUrl = request.url;
+    let customHeaders = false;
     if (reqUrl.startsWith("/")) {
       reqUrl = location.host + reqUrl;
+      customHeaders = true;
     }
     const method = request.method;
     const { host, pathname } = parseURI(reqUrl);
@@ -37,9 +39,14 @@ export class SquzyInterceptor implements HttpInterceptor {
         };
       }),
       switchMap(({ app, trx }) => {
-        const clonedRequest = request.clone({
-          headers: request.headers.set(app.getTracingHeaderKey(), trx.getId()),
-        });
+        const clonedRequest = customHeaders
+          ? request.clone({
+              headers: request.headers.set(
+                app.getTracingHeaderKey(),
+                trx.getId()
+              ),
+            })
+          : request;
 
         return next.handle(clonedRequest).pipe(
           finalize(() => trx.end()),
