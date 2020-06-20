@@ -1,6 +1,6 @@
 {
   "name": "@squzy/express",
-  "version": "0.1.19-alpha.0",
+  "version": "0.1.20-alpha.0",
   "description": "Basic wrapper for Squzy Monitoring Express",
   "author": "Iurii Panarin <tduble94@gmail.com>",
   "homepage": "https://github.com/squzy/squzy_node#readme",
@@ -33,7 +33,7 @@
     "@types/express": "^4.17.6"
   },
   "dependencies": {
-    "@squzy/core": "^0.1.19-alpha.0",
+    "@squzy/core": "^0.1.20-alpha.0",
     "@types/on-finished": "^2.3.1",
     "on-finished": "^2.3.0"
   },
