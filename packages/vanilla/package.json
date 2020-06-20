@@ -1,6 +1,6 @@
 {
   "name": "@squzy/vanilla",
-  "version": "0.1.13-alpha.0",
+  "version": "0.1.14-alpha.0",
   "description": "Monitoring package for vanilla",
   "author": "Iurii Panarin <tduble94@gmail.com>",
   "homepage": "https://github.com/squzy/squzy_node#readme",
@@ -28,7 +28,7 @@
     "url": "https://github.com/squzy/squzy_node/issues"
   },
   "dependencies": {
-    "@squzy/core": "^0.1.13-alpha.0",
+    "@squzy/core": "^0.1.14-alpha.0",
     "uri-parse-lib": "^2.3.0"
   },
   "gitHead": "a3be13ffa02b229eb6b4556b2051c7aaa08abaac"
