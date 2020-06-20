@@ -1,5 +1,7 @@
 # @squzy/angular
 
+## Not work with IVY yet
+
 Middleware for angular applications
 
 ## Usage
