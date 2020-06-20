@@ -28,7 +28,6 @@ export function createFetch(application: IApp) {
       if (typeof input === "string") {
         rqOpts = {
           method,
-          url: input,
           headers: new Headers({
             [app.getTracingHeaderKey()]: trx.getId(),
           }),
@@ -52,7 +51,7 @@ export function createFetch(application: IApp) {
         method,
       });
 
-      return fetch(rqOpts, init)
+      return fetch(input, init)
         .then((res) => {
           trx.end(Status.TRANSACTION_SUCCESSFUL);
           return res;

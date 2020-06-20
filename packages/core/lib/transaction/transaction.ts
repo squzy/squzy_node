@@ -69,7 +69,6 @@ class Transaction<T> implements ITransaction, Creator {
     if (end) {
       this.dateTo = `${toNano(Date.now())}`;
     }
-    console.log(status)
     return this;
   }
 
@@ -115,7 +114,6 @@ class Transaction<T> implements ITransaction, Creator {
           ? { message: error.message }
           : undefined;
     }
-    console.log(req)
 
     try {
       fetch(
