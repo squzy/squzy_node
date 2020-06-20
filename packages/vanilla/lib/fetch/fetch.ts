@@ -8,6 +8,7 @@ export function createFetch(application: IApp) {
       let reqUrl;
       let method = "GET";
       let rqOpts: Request;
+      let customHeaders = false;
       if (typeof input === "string") {
         transactionName = input;
         reqUrl = input;
@@ -18,6 +19,7 @@ export function createFetch(application: IApp) {
       }
       if (reqUrl.startsWith("/")) {
         reqUrl = location.host + reqUrl;
+        customHeaders = true
       }
       const { host, pathname } = parseURI(reqUrl);
       const trx = app.createTransaction(
@@ -28,21 +30,21 @@ export function createFetch(application: IApp) {
       if (typeof input === "string") {
         rqOpts = {
           method,
-          headers: new Headers({
+          headers: customHeaders ? new Headers({
             [app.getTracingHeaderKey()]: trx.getId(),
-          }),
+          }) : new Headers({}),
         } as Request;
       } else {
-        if (input.headers) {
+        if (input.headers && customHeaders) {
           input.headers.append(app.getTracingHeaderKey(), trx.getId());
         }
         rqOpts = {
           ...input,
           headers: input.headers
             ? input.headers
-            : new Headers({
+            : customHeaders ? new Headers({
                 [app.getTracingHeaderKey()]: trx.getId(),
-              }),
+              }) : new Headers({}),
         };
       }
       trx.setMeta({
