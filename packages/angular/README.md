@@ -17,9 +17,9 @@ import { createApplication } from "@squzy/core"
 
 imports: [
   SquzyMonitoringModule.forRoot(createApplication({
-      apiHost: string; // host of api service of squzy
-      name: string; // name of application
-      host: string; // host of application
+      apiHost: string, // host of api service of squzy
+      name: string, // name of application
+      host: string, // host of application
   }))
 ],
 ```
